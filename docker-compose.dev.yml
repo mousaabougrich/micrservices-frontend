@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  healthflow-frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: healthflow-frontend-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:8000
+    stdin_open: true
+    tty: true
+    networks:
+      - healthflow-network
+    command: npm run dev -- --host 0.0.0.0
+
+networks:
+  healthflow-network:
+    driver: bridge

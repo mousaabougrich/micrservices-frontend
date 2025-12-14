@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Frontend service
+  healthflow-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthflow-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - healthflow-network
+    labels:
+      - "com.healthflow.service=frontend"
+      - "com.healthflow.version=1.0.0"
+
+  # Example backend services (uncomment when ready)
+  # patients-service:
+  #   image: healthflow/patients-service:latest
+  #   container_name: patients-service
+  #   ports:
+  #     - "8001:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://user:password@db:5432/patients
+  #   networks:
+  #     - healthflow-network
+  #   restart: unless-stopped
+
+  # scores-service:
+  #   image: healthflow/scores-service:latest
+  #   container_name: scores-service
+  #   ports:
+  #     - "8002:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://user:password@db:5432/scores
+  #   networks:
+  #     - healthflow-network
+  #   restart: unless-stopped
+
+  # audit-service:
+  #   image: healthflow/audit-service:latest
+  #   container_name: audit-service
+  #   ports:
+  #     - "8003:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://user:password@db:5432/audit
+  #   networks:
+  #     - healthflow-network
+  #   restart: unless-stopped
+
+  # reports-service:
+  #   image: healthflow/reports-service:latest
+  #   container_name: reports-service
+  #   ports:
+  #     - "8004:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://user:password@db:5432/reports
+  #   networks:
+  #     - healthflow-network
+  #   restart: unless-stopped
+
+  # Database (optional)
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: healthflow-db
+  #   environment:
+  #     - POSTGRES_USER=healthflow
+  #     - POSTGRES_PASSWORD=healthflow123
+  #     - POSTGRES_DB=healthflow
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - healthflow-network
+  #   restart: unless-stopped
+
+networks:
+  healthflow-network:
+    driver: bridge
+    name: healthflow-network
+
+# volumes:
+#   postgres_data:
+#     name: healthflow-postgres-data
